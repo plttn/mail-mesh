@@ -1,5 +1,3 @@
-# New sieve rules
-
 # Rule Skip rules - notifications [regular expressions + from]
 if 
     anyof(
@@ -132,11 +130,11 @@ if
 }
 
 # Rule Financial - media [regular expressions]
+# TODO: change to use header detection, rather than From search
 
 if 
     address :regex "From" "^(?i:Disneyplus.*$|Netflix.*$|^.*hulu.*$|HBOmax.*$|MoviesAnywhere.*$|iTunes.*$|7digital.*$|Bandcamp.*$|Roku.*$|Plex.*$|Peacock.*$)"
 {
-    set "read" "Y";
     addflag "\\Seen";
     
     fileinto "INBOX.Financial.Media";
