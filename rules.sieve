@@ -64,6 +64,9 @@ if
 if 
 allof (
     anyof(
+        header :regex "Subject" "(?i)(ship(ped)?)|(.*a shipment (from|to).*(was|has) shipped.*)|((package|order) (is|has))|(track(ing)? .* your)",
+    ),
+    anyof(
     body :text :regex "\\s(1Z)[0-9A-Z]{16}\\s",
     body :text :regex "\\s(T)+[0-9A-Z]{10}\\s",
     body :text :regex "\\s[0-9]{9}\\s",
@@ -77,9 +80,6 @@ allof (
     body :text :regex "\\s[0-9]{15}\\s",
     body :text :regex "\\s[0-9]{12}\\s",
     body :text :regex "\\s[0-9]{22}\\s"
-    ),
-    anyof(
-        header :regex "Subject" "(?i)(ship(ped)?)|(.*a shipment (from|to).*(was|has) shipped.*)|((package|order) (is|has))|(track(ing)? .* your)",
     )
 )
 {
