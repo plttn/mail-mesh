@@ -95,7 +95,8 @@ if
     anyof(
     address :regex "From" "(^.*store-news.*$|^.*axxess.*$)(\\b.*?|$)",
     header :regex "Subject" "^(?=.*\\b(?i)(final offer|limited time|last chance|black friday|cyber monday|holiday|christmas|free shipping|send (gift|present))\\b).*\\b(?i)(discount|save|\\d+% off|free)\\b",
-    body :text :regex "\\b\\d{1,2}(?:\\.\\d+)?% off\\b"
+    body :text :regex "\\b\\d{1,2}(?:\\.\\d+)?% off\\b",
+    header :regex "Subject" "\\b(?i)(discount(ed)?|save|\\d+% off|free)\\b"
     )
 {
     fileinto "INBOX.Financial.Promotions";
