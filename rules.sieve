@@ -223,25 +223,19 @@ if
 if 
     anyof(
     address :contains "From" "twitter.com",
-
+    address :contains "From" "facebook.com",
+    address :contains "From" "linkedin.com",
+    address :contains "From" "tumblr.com"
     )
 {
-  if mailboxidexists "0c32e169-05b1-49a7-a2a3-5e64787a504f" {
-    set "L13_Social" "Y";
-    set "skipinbox" "Y";
-  }
-  set "stop" "Y";
+    fileinto "INBOX.Social";
+    stop;
 }
 
 # Rule Newsletters [list-unsubscribe]
 if 
-  allof( not string :is "${stop}" "Y",
-    exists "List-Unsubscribe"
-  )
+    header :exists "List-Unsubscribe"
 {
-  if mailboxidexists "77854b84-0eb9-4b09-84b0-b2a8c0eb16ba" {
-    set "L14_Newsletters" "Y";
-    set "skipinbox" "Y";
-  }
-  set "stop" "Y";
+    fileinto "INBOX.Newsletters";
+    stop;
 }
