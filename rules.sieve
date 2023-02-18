@@ -193,7 +193,10 @@ if
 
 # Rule Notifications - customer support [glob patterns]
 if 
-    header :regex "From" "(^|,)[[:space:]]*\"?.*customer.*.?\\(are\\|uccess\\|upport\\)\"?[[:space:]]*<"
+    anyof (
+        header :regex "From" "(^|,)[[:space:]]*\"?.*customer.*.?\\(are\\|uccess\\|upport\\)\"?[[:space:]]*<",
+        header :regex "Subject" "(?i)(\\b(feedback|opinion).*review)|(\\breview.*(experience|order|purchase))|(\\b(leave|write)\\b.*review)|(\\bshare|love (your|some) (thoughts|feedback|experience))"
+    )
 {
     fileinto "INBOX.Notifications";
     stop;
