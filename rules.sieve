@@ -163,7 +163,8 @@ if
     header :regex ["To","Cc"] "(^|,)[[:space:]]*\"?.*\\[Aa\\]\\[Pp\\]\\[Pp\\]\\[Ll\\]\\[Ee\\] \\[Cc\\]\\[Aa\\]\\[Rr\\]\\[Dd\\].*\\[Ss\\]\\[Uu\\]\\[Pp\\]\\[Pp\\]\\[Oo\\]\\[Rr\\]\\[Tt\\].*\"?[[:space:]]*<",
     header :regex "Subject" "\\b(?i)(receipt|bill|invoice|transaction|statement|payment|order|subscription|authorized|booking|renew(al|ing)?|expir(e|ed|ing)?|deposit|withdrawal|purchased?)\\b.*",
     header :regex "Subject" "(?i)\\b(receipt|bill|invoice|transaction|statement|payment|order|subscription|authorized|booking|renew(al|ing)?|expir(e|ed|ing)?|deposit|withdrawal|purchased|(itunes|apple) store|credit (score|report)|manage (account|loan))\\b.*",
-    header :regex "Subject" "(?i)\\b(gift (card|certificate)|zelle|new plan|autopay)\\b.*"
+    header :regex "Subject" "(?i)\\b(gift (card|certificate)|zelle|new plan|autopay)\\b.*",
+    header :regex "Subject" "(?i).* paid .* \\$(\\d,?)+\\.\\d{2}"
     )
 {
     fileinto "INBOX.Financial";
