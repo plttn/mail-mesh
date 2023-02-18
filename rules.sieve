@@ -1,3 +1,6 @@
+#require ["fileinto", "reject", "vacation", "notify", "envelope", "body", "relational", "regex", "subaddress", "copy", "mailbox", "mboxmetadata", "servermetadata", "date", "index", "comparator-i;ascii-numeric", "variables", "imap4flags", "editheader", "duplicate", "vacation-seconds", "fcc", "vnd.cyrus.jmapquery", "vnd.cyrus.log", "mailboxid", "special-use", "vnd.cyrus.snooze", "vnd.cyrus.imip"];
+
+
 # Rule Skip rules - notifications [regular expressions + from]
 if 
     anyof(
@@ -62,7 +65,7 @@ if
 if 
 allof (
     anyof(
-        header :regex "Subject" "(?i)(ship(ped)?)|(.*a shipment (from|to).*(was|has) shipped.*)|((package|order) (is|has))|(track(ing)? .* your)",
+        header :regex "Subject" "(?i)(ship(ped)?)|(.*a shipment (from|to).*(was|has) shipped.*)|((package|order) (is|has))|(track(ing)? .* your)"
     ),
     anyof(
     body :text :regex "\\s(1Z)[0-9A-Z]{16}\\s",
@@ -104,7 +107,7 @@ if
     header :regex "Subject" "\\b(?i)(flight|confirmation|you're going to).*\\b(reservation|on)\\b"
 {
     addflag "\\Seen";
-    fileinto "INBOX.Financial.Travel"
+    fileinto "INBOX.Financial.Travel";
     #redirect :copy "track@my.flightyapp.com";
     stop;
 }
@@ -234,7 +237,7 @@ if
 
 # Rule Newsletters [list-unsubscribe]
 if 
-    header :exists "List-Unsubscribe"
+    exists "List-Unsubscribe"
 {
     fileinto "INBOX.Newsletters";
     stop;
