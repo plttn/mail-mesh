@@ -142,3 +142,106 @@ if
 }
 
 # Rule Financial - taxes [regular expressions]
+
+if 
+    header :regex "Subject" "\\b(?i)(tax|taxes|taxation)(es)?( |-)?(year|years|season|deadline|form|return|refund|filing|audit|documents?)\\b(\\d{4})?"
+{
+    addflag "\\Seen";
+
+    fileinto "INBOX.Financial.Taxes";
+    stop;
+}
+
+# Rule Financial [regular expressions + globs]
+if 
+    anyof(
+    body :text :regex "(?i)you(?:r)?[\\s-]*(?:pre[\\s-]?order|pre[\\s-]?order(?:ed))",
+    header :regex ["To","Cc"] "(^|,)[[:space:]]*\"?.*\\[Aa\\]\\[Pp\\]\\[Pp\\]\\[Ll\\]\\[Ee\\] \\[Cc\\]\\[Aa\\]\\[Rr\\]\\[Dd\\].*\\[Ss\\]\\[Uu\\]\\[Pp\\]\\[Pp\\]\\[Oo\\]\\[Rr\\]\\[Tt\\].*\"?[[:space:]]*<",
+    header :regex "Subject" "\\b(?i)(receipt|bill|invoice|transaction|statement|payment|order|subscription|authorized|booking|renew(al|ing)?|expir(e|ed|ing)?|deposit|withdrawl|purchased)\\b.*",
+    header :regex "Subject" "(?i)\\b(receipt|bill|invoice|transaction|statement|payment|order|subscription|authorized|booking|renew(al|ing)?|expir(e|ed|ing)?|deposit|withdrawl|purchased|(itunes|apple) store|credit (score|report)|manage (account|loan))\\b.*",
+    header :regex "Subject" "(?i)\\b(gift (card|certificate)|zelle|new plan|autopay)\\b.*"
+    )
+{
+    fileinto "INBOX.Financial";
+    stop;
+}
+
+# Rule Notifications - privacy [regular expressions]
+if 
+    header :regex "Subject" "\\b(?i)(CCPA|California Consumer Privacy Act|privacy request|data privacy|personal data request|rights request)\\b"
+{
+    fileinto "INBOX.Notifications.Privacy";
+    addflag "\\Seen";
+    stop;
+}
+
+# Rule DMARC [regular expressions]
+if 
+    anyof(
+    header :regex "Subject" "((^.*dmarc.*$)(\\b.*?|$))",
+    address :regex "From" "((^.*dmarc.*$)(\\b.*?|$))"
+    )
+{
+    fileinto "INBOX.Notifications.DMARC";
+    addflag "\\Seen";
+    stop;
+}
+
+# Rule Notifications - customer support [glob patterns]
+if 
+    header :regex "From" "(^|,)[[:space:]]*\"?.*customer.*.?\\(are\\|uccess\\|upport\\)\"?[[:space:]]*<"
+{
+    fileinto "INBOX.Notifications";
+    stop;
+}
+
+# Rule Notifications [regular expressions]
+if 
+    anyof(
+    header :regex "Subject" "\\b((?i:Privacy|User).*((?i:Policy|Agreement).*$)|(?i:Protect|Register|Update).*((?i:Your Account).*$))",
+    header :regex "Subject" "\\b((?i:Important|Critical).*((?i:Account|Plan).*(?i:Information|Updates))|^.*(?i:Failed|Unsuccessful).*(?i:Deployment)(\\b.*?|$))",
+    header :regex "Subject" "^.*((?i:Google Account)).*((?i:Inactive|Closed|Settings))(\\b.*?|$)",
+    header :regex "Subject" "^.*((?i:Weekly|Monthly).*(?i:Report|Update))(\\b.*?|$)"
+    )
+
+{
+    fileinto "INBOX.Notifications";
+    addflag "\\Seen";
+    stop;
+}
+
+# Rule Github [mailing list id]
+if 
+    header :matches ["List-Id","List-Post"] "*github.com"
+{
+    fileinto "INBOX.Notifications.Github";
+    stop;
+}
+
+# Rule Social [from targeting]
+# Search: "from:facebook.com OR from:twitter.com OR from:linkedin.com OR from:tumblr.com"
+if 
+    anyof(
+    address :contains "From" "twitter.com",
+
+    )
+{
+  if mailboxidexists "0c32e169-05b1-49a7-a2a3-5e64787a504f" {
+    set "L13_Social" "Y";
+    set "skipinbox" "Y";
+  }
+  set "stop" "Y";
+}
+
+# Rule Newsletters [list-unsubscribe]
+if 
+  allof( not string :is "${stop}" "Y",
+    exists "List-Unsubscribe"
+  )
+{
+  if mailboxidexists "77854b84-0eb9-4b09-84b0-b2a8c0eb16ba" {
+    set "L14_Newsletters" "Y";
+    set "skipinbox" "Y";
+  }
+  set "stop" "Y";
+}
