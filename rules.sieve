@@ -1,6 +1,33 @@
 #require ["fileinto", "reject", "vacation", "notify", "envelope", "body", "relational", "regex", "subaddress", "copy", "mailbox", "mboxmetadata", "servermetadata", "date", "index", "comparator-i;ascii-numeric", "variables", "imap4flags", "editheader", "duplicate", "vacation-seconds", "fcc", "vnd.cyrus.jmapquery", "vnd.cyrus.log", "mailboxid", "special-use", "vnd.cyrus.snooze", "vnd.cyrus.imip"];
 
 
+# Rule Skip - Contacts (but not auto-saved contacts) Requires Fastmail for JMAP support
+
+if 
+    jmapquery text:
+  {
+     "conditions" : [
+        {
+           "fromAnyContact" : true
+        },
+        {
+           "conditions" : [
+              {
+                 "fromContactGroupId" : "<AUTOSAVED CONTACT GROUP ID>"
+              }
+           ],
+           "operator" : "NOT"
+        }
+     ],
+     "operator" : "AND"
+  }
+.
+{
+  set "flagged" "Y";
+  stop;
+  
+}
+
 # Rule Skip rules - notifications [regular expressions + from]
 if 
     anyof(
