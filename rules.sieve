@@ -1,7 +1,6 @@
 #require ["fileinto", "reject", "vacation", "notify", "envelope", "body", "relational", "regex", "subaddress", "copy", "mailbox", "mboxmetadata", "servermetadata", "date", "index", "comparator-i;ascii-numeric", "variables", "imap4flags", "editheader", "duplicate", "vacation-seconds", "fcc", "vnd.cyrus.jmapquery", "vnd.cyrus.log", "mailboxid", "special-use", "vnd.cyrus.snooze", "vnd.cyrus.imip"];
 
-
-# Rule Skip - Contacts (but not auto-saved contacts) Requires Fastmail for JMAP support
+# Rule Skip - Contacts (but not auto-saved contacts)
 
 if 
     jmapquery text:
@@ -24,8 +23,7 @@ if
 .
 {
   set "flagged" "Y";
-  stop;
-  
+  stop;  
 }
 
 # Rule Skip rules - notifications [regular expressions + from]
@@ -57,7 +55,7 @@ if
     )
 {
     fileinto "INBOX.Notifications";
-    addflag "\\Seen";
+    setflag "\\Seen";
 }
 
 # Rule Forward - Reader [regular expression]
@@ -68,9 +66,9 @@ if
     header :regex "List-Id" "[a-zA-Z0-9-]+\\.buttondown\\.email"
     )
 {
+  setflag "\\Seen";
   fileinto "INBOX.Forwarded.Reader";
-  #redirect :copy "<READER FORWARD EMAIL>"; #analyze, then remove comment
-  addflag "\\Seen";
+  #redirect :copy "<YOUR_READER_EMAIL>"; #analyze, then remove comment
   stop;
 }
 
@@ -111,9 +109,9 @@ allof (
     )
 )
 {
+    setflag "\\Seen";
     fileinto "INBOX.Financial.Deliveries";
-    #redirect :copy "<PACKAGE FORWARD EMAIL>"; #analyze, then remove comment
-    addflag "\\Seen";
+    #redirect :copy "<YOURPACKAGETRACKINGEMAIL>"; #analyze, then remove comment
     stop;
 }
 
@@ -134,7 +132,7 @@ if
 if 
     header :regex "Subject" "\\b(?i)(flight|confirmation|you're going to).*\\b(reservation|on)\\b"
 {
-    addflag "\\Seen";
+    setflag "\\Seen";
     fileinto "INBOX.Financial.Travel";
     #redirect :copy "track@my.flightyapp.com";
     stop;
@@ -164,9 +162,9 @@ if
 # TODO: change to use header detection, rather than From search
 
 if 
-    address :regex "From" "^(?i:Disneyplus.*$|Netflix.*$|^.*hulu.*$|HBOmax.*$|MoviesAnywhere.*$|iTunes.*$|7digital.*$|Bandcamp.*$|Roku.*$|Plex.*$|Peacock.*$)"
+    address :regex "From" "^(?i:Disneyplus.*$|Netflix.*$|^.*hulu.*$|HBOmax.*$|MoviesAnywhere.*$|iTunes.*$|7digital.*$|Bandcamp.*$|Roku.*$|Plex.*$|Peacock.*$|Peacocktv.*&)"
 {
-    addflag "\\Seen";
+    setflag "\\Seen";
     
     fileinto "INBOX.Financial.Media";
     stop;
@@ -177,7 +175,7 @@ if
 if 
     header :regex "Subject" "\\b(?i)(tax|taxes|taxation)(es)?( |-)?(year|years|season|deadline|form|return|refund|filing|audit|documents?)\\b(\\d{4})?"
 {
-    addflag "\\Seen";
+    setflag "\\Seen";
 
     fileinto "INBOX.Financial.Taxes";
     stop;
@@ -201,8 +199,8 @@ if
 if 
     header :regex "Subject" "\\b(?i)(CCPA|California Consumer Privacy Act|privacy request|data privacy|personal data request|rights request)\\b"
 {
+    setflag "\\Seen";
     fileinto "INBOX.Notifications.Privacy";
-    addflag "\\Seen";
     stop;
 }
 
@@ -213,8 +211,8 @@ if
     address :regex "From" "((^.*dmarc.*$)(\\b.*?|$))"
     )
 {
+    setflag "\\Seen";
     fileinto "INBOX.Notifications.DMARC";
-    addflag "\\Seen";
     stop;
 }
 
@@ -239,8 +237,8 @@ if
     )
 
 {
+    setflag "\\Seen";
     fileinto "INBOX.Notifications";
-    addflag "\\Seen";
     stop;
 }
 
