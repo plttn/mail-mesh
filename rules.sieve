@@ -244,7 +244,7 @@ if
 
 # Rule Github [mailing list id]
 if 
-    header :matches ["List-Id","List-Post"] "*github.com"
+    header :regex "List-ID" ".*github\\.com"
 {
     fileinto "INBOX.Notifications.Github";
     stop;
