@@ -1,6 +1,6 @@
 # Mail Mesh
 
-Full credit for the initial regular expressions and rule work goes to Cory: [Handling inbound email on Fastmail](https://blog.coryd.dev/2023/01/workflows-handling-inbound-email-on-fastmail-with-regular-expressions)
+Full credit for the initial regular expressions and rule work goes to Cory: [Handling inbound email on Fastmail](https://coryd.dev/posts/2023/fastmail-handling-inbound-email-with-regex-filters-now-with-chatgpt/)
 
 ## How to use
 
