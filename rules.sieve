@@ -93,19 +93,19 @@ allof (
         header :regex "Subject" "(?i)(ship(ped)?)|(.*a shipment (from|to).*(was|has) shipped.*)|((package|order) (is|has))|(track(ing)? .* your)"
     ),
     anyof(
-    body :text :regex "\\s(1Z)[0-9A-Z]{16}\\s",
-    body :text :regex "\\s(T)+[0-9A-Z]{10}\\s",
-    body :text :regex "\\s[0-9]{9}\\s",
-    body :text :regex "\\s[0-9]{26}\\s",
-    body :text :regex "\\s(94|93|92|94|95)[0-9]{20}\\s",
-    body :text :regex "\\s(94|93|92|94|95)[0-9]{22}\\s",
-    body :text :regex "\\s(70|14|23|03)[0-9]{14}\\s",
-    body :text :regex "\\s(M0|82)[0-9]{8}\\s",
-    body :text :regex "\\s([A-Z]{2})[0-9]{9}([A-Z]{2})\\s",
-    body :text :regex "\\s[0-9]{20}\\s",
-    body :text :regex "\\s[0-9]{15}\\s",
-    body :text :regex "\\s[0-9]{12}\\s",
-    body :text :regex "\\s[0-9]{22}\\s"
+    body :regex "(1Z)[0-9A-Z]{16}",
+    body :regex "(T)+[0-9A-Z]{10}",
+    body :regex "[0-9]{9}",
+    body :regex "[0-9]{26}",
+    body :regex "(94|93|92|94|95)[0-9]{20}",
+    body :regex "(94|93|92|94|95)[0-9]{22}",
+    body :regex "(70|14|23|03)[0-9]{14}",
+    body :regex "(M0|82)[0-9]{8}",
+    body :regex "([A-Z]{2})[0-9]{9}([A-Z]{2})",
+    body :regex "[0-9]{20}",
+    body :regex "[0-9]{15}",
+    body :regex "[0-9]{12}",
+    body :regex "[0-9]{22}"
     )
 )
 {
